@@ -9,7 +9,7 @@ namespace DB.Controllers
         [HttpGet]
         public ActionResult<IEnumerable<string>> Get()
         {
-            return new List<string> { "data1", "data2", "data3" };
+            return new List<string> { "data1", "data2", "data3", "data4" };
         }
     }
 }
