@@ -1,4 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
+using Types;
 
 namespace DB.Controllers
 {
@@ -7,24 +9,23 @@ namespace DB.Controllers
     public class TestController : ControllerBase
     {
         [HttpGet]
-        public ActionResult<IEnumerable<string>> Get()
+        public ActionResult<IEnumerable<KeyValuePairModel>> Get()
         {
-            var test = Commands.Read.ReadJson("data.json");
+            var jsonKeyValuePairs = Commands.Read.ReadJson("data.json");
+            List<KeyValuePairModel> keyValuePairs = new List<KeyValuePairModel>();
 
-            if (test != null)
+            if (jsonKeyValuePairs != null)
             {
-                foreach (var pair in test)
+                foreach (var pair in jsonKeyValuePairs)
                 {
-                    Console.WriteLine($"Key: {pair.Key}, Value: {pair.Value}");
+                    keyValuePairs.Add(new KeyValuePairModel(pair.Key, pair.Value));
                 }
+                return Ok(keyValuePairs);
             }
             else
             {
-                Console.WriteLine("Failed to read or parse the JSON file.");
+                return NotFound("Failed to read or parse the JSON file.");
             }
-
-
-            return new List<string> { "data1", "data2", "data3", "data4" };
         }
     }
 }
